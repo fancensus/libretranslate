@@ -125,7 +125,7 @@ class LibreTranslate
     }
 
     //=========== Detect Language ======
-    public function Detect($text) {
+    public function Detect($text, $all = false) {
         $data['q'] = $text;
         if (!is_null($this->apiKey)) {
             $data['api_key'] = $this->apiKey;
@@ -134,7 +134,11 @@ class LibreTranslate
         $response = $this->_doRequest($endpoint);
         // sort by confidence? return all, or most likely...Or (for now, just return first result)
         if (is_array($response)) {
-            return $response[0]->language;
+            if ($all) {
+                return $response;
+            } else {
+                return $response[0]->language;
+            }
         } else {
             // return false, or throw error....
             return false;
