@@ -17,7 +17,7 @@ class LibreTranslate
     private $apiBase = 'http://localhost';
 
     /** @var int The port at apiBase to use   */
-    private $apiPort = 5000;
+    private $apiPort = null;
 
     /** @var string Local path to ltmanage, if available */
     private $LTManage = null;
@@ -39,7 +39,7 @@ class LibreTranslate
     public function __construct($host = null, $port = null, $source = null, $target = null) {
         // set API base, remove trailing slash
         if (!is_null($host)) {
-            $this->apiBase = rtrim( $host, '/\\' );;
+            $this->apiBase = rtrim( $host, '/\\' );
         }
 
         // set API port
@@ -96,7 +96,7 @@ class LibreTranslate
     /* set both... */
     public function setLanguages($source, $target) {
         $this->setSource($source);
-        $this->setLanguage($target);
+        $this->setTarget($target);
     }
 
     /*
@@ -312,7 +312,7 @@ class LibreTranslate
 
     //====== send request to libretranslate server
     // TODO: connection issue or libretranslate error message....
-    private function _doRequest($endpoint, $data = [], $type = 'POST') {
+    public function _doRequest($endpoint, $data = [], $type = 'POST') {
         $this->lastError = '';
         $finalEndpoint = $this->apiBase . ( !is_null($this->apiPort) ? ':' . $this->apiPort : '' ) . $endpoint;
         $ch = \curl_init($finalEndpoint);
